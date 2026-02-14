@@ -56,7 +56,7 @@ import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
   layout: false,
-  middleware: ['guestGuard'],
+  middleware: ['guest-guard'],
 })
 
 const { signInWithPassword, loading, error } = useAuth()
