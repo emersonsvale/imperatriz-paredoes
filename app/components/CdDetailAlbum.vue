@@ -29,8 +29,10 @@
     <div class="flex flex-col gap-2">
       <h1 class="font-display text-3xl font-bold leading-tight text-white md:text-4xl">
         {{ album.title }}
-        <br />
-        <span class="text-primary">{{ album.subtitle }}</span>
+        <template v-if="album.subtitle">
+          <br />
+          <span class="text-primary">{{ album.subtitle }}</span>
+        </template>
       </h1>
       <div class="mt-1 flex items-center gap-2 text-sm text-muted-green">
         <span class="material-symbols-outlined text-[18px]">calendar_month</span>
@@ -96,61 +98,79 @@
     <!-- DJ Card -->
     <div class="mt-4 rounded-xl border border-white/5 bg-surface-dark p-5">
       <div class="mb-4 flex items-center gap-4">
-        <div class="size-16 overflow-hidden rounded-full border-2 border-primary">
+        <div class="size-16 shrink-0 overflow-hidden rounded-full border-2 border-primary">
           <img
             :alt="dj.name"
             class="size-full object-cover"
             :src="dj.avatarUrl"
           />
         </div>
-        <div>
+        <div class="min-w-0">
           <p class="mb-0.5 text-xs font-semibold uppercase tracking-wider text-muted-green">
             Artista
           </p>
-          <h3 class="cursor-pointer text-xl font-bold text-white transition-colors hover:text-primary">
+          <h3 class="cursor-pointer text-xl font-bold text-white transition-colors hover:text-primary truncate">
             {{ dj.name }}
           </h3>
-          <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-            <a
-              v-if="dj.instagram"
-              :href="instagramHref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-white/60 transition-colors hover:text-[#E1306C]"
-            >
-              Instagram
-            </a>
-            <a
-              v-if="dj.facebook"
-              :href="facebookHref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-white/60 transition-colors hover:text-[#1877F2]"
-            >
-              Facebook
-            </a>
-            <a
-              v-if="dj.twitter"
-              :href="twitterHref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-white/60 transition-colors hover:text-[#1DA1F2]"
-            >
-              X / Twitter
-            </a>
-            <a
-              v-if="dj.whatsapp"
-              :href="whatsappHref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-white/60 transition-colors hover:text-[#25D366]"
-            >
-              WhatsApp
-            </a>
-          </div>
         </div>
       </div>
-      <p class="mb-4 text-sm leading-relaxed text-white/70">
+      <!-- Redes sociais do DJ -->
+      <div v-if="hasSocialLinks" class="mb-4">
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/50">
+          Redes sociais
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <a
+            v-if="dj.instagram"
+            :href="instagramHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#E1306C]/50 hover:bg-[#E1306C]/10 hover:text-[#E1306C]"
+            :aria-label="`Instagram de ${dj.name}`"
+          >
+            <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+            <span>Instagram</span>
+            <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+          </a>
+          <a
+            v-if="dj.facebook"
+            :href="facebookHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 hover:text-[#1877F2]"
+            :aria-label="`Facebook de ${dj.name}`"
+          >
+            <span class="material-symbols-outlined text-[18px]">group</span>
+            <span>Facebook</span>
+            <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+          </a>
+          <a
+            v-if="dj.twitter"
+            :href="twitterHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#1DA1F2]/50 hover:bg-[#1DA1F2]/10 hover:text-[#1DA1F2]"
+            :aria-label="`X de ${dj.name}`"
+          >
+            <span class="material-symbols-outlined text-[18px]">tag</span>
+            <span>X / Twitter</span>
+            <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+          </a>
+          <a
+            v-if="dj.whatsapp"
+            :href="whatsappHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#25D366]/50 hover:bg-[#25D366]/10 hover:text-[#25D366]"
+            :aria-label="`WhatsApp de ${dj.name}`"
+          >
+            <span class="material-symbols-outlined text-[18px]">chat</span>
+            <span>WhatsApp</span>
+            <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+          </a>
+        </div>
+      </div>
+      <p v-if="dj.bio" class="mb-4 text-sm leading-relaxed text-white/70">
         {{ dj.bio }}
       </p>
       <NuxtLink
@@ -191,6 +211,16 @@ const twitterHref = computed(() =>
 )
 const whatsappHref = computed(() =>
   props.dj.whatsapp ? whatsappUrl(props.dj.whatsapp) : ''
+)
+
+const hasSocialLinks = computed(
+  () =>
+    Boolean(
+      props.dj.instagram?.trim() ||
+        props.dj.facebook?.trim() ||
+        props.dj.twitter?.trim() ||
+        props.dj.whatsapp?.trim()
+    )
 )
 
 const canPlayAll = computed(() => {

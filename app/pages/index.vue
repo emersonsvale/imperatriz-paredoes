@@ -1,13 +1,10 @@
 <template>
-  <div class="flex min-h-screen flex-col pb-24">
+  <div class="flex min-h-screen flex-col">
     <AppHeader />
 
     <main class="flex-1 px-4 md:px-10 py-6 max-w-[1600px] mx-auto w-full space-y-10">
-      <!-- Hero Slider (destaques, banners) -->
+      <!-- Hero Slider (banners, CDs e DJs selecionados pelo admin) -->
       <HeroSlider :slides="heroSlides" :autoplay-interval="6000" />
-
-      <!-- Category Filters -->
-      <CategoryTabs v-model="activeCategory" :tabs="categories" />
 
       <!-- Top 10 Downloads -->
       <section id="top-downloads">
@@ -15,7 +12,7 @@
           title="Top 10 Downloads"
           icon="trending_up"
           action-text="Ver todos"
-          action-to="/#top-downloads"
+          action-to="/top-downloads"
         />
         <div v-if="topDownloads.length" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           <CdCard
@@ -40,11 +37,11 @@
         title="Top DJs"
         subtitle="Os artistas com mais CDs, plays e downloads."
         action-text="Ver todos"
-        action-to="/#top-downloads"
+        action-to="/djs"
       >
         <div v-if="topDjs.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <TopDjCard
-            v-for="dj in topDjs"
+            v-for="(dj, index) in topDjs"
             :key="dj.id"
             :id="dj.id"
             :nome="dj.nome"
@@ -52,6 +49,7 @@
             :cd-count="dj.cdCount"
             :plays-count="dj.playsCount"
             :downloads-count="dj.downloadsCount"
+            :rank="index + 1"
             :to="`/dj/${dj.id}`"
           />
         </div>
@@ -89,7 +87,7 @@
         title="Nossos Parceiros"
         subtitle="Marcas e parceiros que apoiam o som automotivo."
         action-text="Ver todos"
-        action-to="/#nossos-parceiros"
+        action-to="/parceiros"
       >
         <div v-if="parceiros.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <PartnerCard
@@ -115,7 +113,6 @@
 import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
 import HeroSlider from '~/components/HeroSlider.vue'
-import CategoryTabs from '~/components/CategoryTabs.vue'
 import type { HeroSlide } from '~~/shared/types/HeroSlide'
 import SectionHeader from '~/components/SectionHeader.vue'
 import FeaturedSection from '~/components/FeaturedSection.vue'
@@ -129,9 +126,6 @@ import { formatRelativeDate } from '~/utils/formatRelativeDate'
 useHead({
   title: 'Imperatriz Paredões - Som Automotivo',
 })
-
-/* ─── State ─── */
-const activeCategory = ref('all')
 
 /* ─── Últimos lançamentos (CDs públicos do banco) ─── */
 const { data: latestCdsData } = await useFetch<{ items: { id: string; titulo: string; created_at: string; capa_url: string | null; artista: string }[] }>('/api/cds/latest', {
@@ -179,59 +173,24 @@ const { data: topDjsData } = await useFetch<{
 })
 const topDjs = computed(() => topDjsData.value?.items ?? [])
 
-/* ─── Nossos Parceiros (placeholder; depois pode vir de API/tabela) ─── */
+/* ─── Nossos Parceiros (API pública) ─── */
 interface ParceiroItem {
   id: string
   nome: string
   logoUrl?: string | null
   href?: string | null
 }
-const parceiros = ref<ParceiroItem[]>([])
+const { data: parceirosData } = await useFetch<ParceiroItem[]>('/api/parceiros', {
+  key: 'parceiros',
+  default: () => [],
+})
+const parceiros = computed(() => parceirosData.value ?? [])
 
-/* ─── Hero Slider (destaques + banners) ─── */
-const heroSlides: HeroSlide[] = [
-  {
-    type: 'content',
-    tag: 'Destaque da Semana',
-    title: 'Paredão',
-    titleHighlight: 'Treme Terra',
-    titleSuffix: '2024',
-    description:
-      'A maior seleção de Eletro-Funk e Automotivo do Brasil. Baixe agora o CD exclusivo mixado pelos melhores DJs da cena.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAcurwCz4EBb9htKfYz_T4IscUZdLkJ5VmRpK6xIMkul64onZ4cXd2fD3SCOXIhSs4fJpQ-vDdyjbHSMHPuhirIc_wZny_uhI7QcPrfwin9Lm5qFF8dl1Efg52KAsacg5MZENb4Ilmw4-9LS6AEusmwJvFK9Cq1sS4K2MwkNQwUvI0GGZlJF2zX8i6lRirz4_OtEktVtngCbNYHW5KRCY_IdGi8YVJ-0Bx7dPLINsXYI8nSscxKrkpjZqqKwVSk3tGH8YpN3Ih8aRs',
-    imageAlt: 'DJ performing at huge party with neon lights',
-    listenUrl: '/cd/1',
-    downloadUrl: '/cd/1',
-  },
-  {
-    type: 'banner',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuADan9_JJp55_0dOaH8xkzXMKxGZu5sU2hGxmBSNcJ4DvU16An3hg0oqpBfsdi08AWDzH9RCsWkKccytutdkBA283U3NNBzL44YT1O-sflCrOz53Cgs-GXtLv_qnAqdKootElKA1m5VnqE2Vf_fqDTB1MjWy_9tOTT0zoVyh3-HQ1QXKV0t9zgoid-tsu-4Qg1bRvoB5qkn_vhzwH95h64WKpXRZWUN7oFB8jS0pL8gPX8JUSk037neW5Z-9uSDrvXt5Mef5lAxoU4',
-    imageAlt: 'Paredão 2024',
-    link: '/cd/2',
-  },
-  {
-    type: 'content',
-    tag: 'Novidade',
-    title: 'Summer',
-    titleHighlight: 'Eletrohits',
-    titleSuffix: '2024',
-    description: 'Os hits do verão para o seu paredão.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAYLpwe1HeYLQ_PuRfdZJZAP-ijywmw5H9IETUobRjw48P7sndc-nkmhy3OsAXMtvsWohtnF2EbTrEv6xru-7eftj01MQfyXgqS0H6oR5L_7aeifVXYduk4_khdN4Y04aABZIRevUA4SzI-eobvAH-w595WHpBJyJ_IoaQkg7ab5ddxT7rlDyqSZY3vv6unf3BN_-Rw9thJAp3Toeq9LgbEgK-X23EWEwpuYpfi2WNe_H-_318BKGLoGei47ck7Ax36PiabdbFJU0E',
-    imageAlt: 'Summer Eletrohits',
-    listenUrl: '/cd/3',
-  },
-]
-
-const categories = [
-  { id: 'all', label: 'Todos' },
-  { id: 'eletro-funk', label: 'Eletro-Funk' },
-  { id: 'piseiro', label: 'Piseiro' },
-  { id: 'forro', label: 'Forró' },
-  { id: 'automotivo', label: 'Automotivo' },
-  { id: 'mega-funk', label: 'Mega Funk' },
-]
+/* ─── Hero Slider (banners, CDs e DJs selecionados pelo admin) ─── */
+const { data: heroSlidesData } = await useFetch<HeroSlide[]>('/api/hero/slides', {
+  key: 'hero-slides',
+  default: () => [],
+})
+const heroSlides = computed(() => heroSlidesData.value ?? [])
 
 </script>

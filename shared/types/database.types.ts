@@ -12,6 +12,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      banner: {
+        Row: {
+          created_at: string
+          id: string
+          image_alt: string | null
+          image_url: string
+          link: string | null
+          ordem: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_alt?: string | null
+          image_url: string
+          link?: string | null
+          ordem?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_alt?: string | null
+          image_url?: string
+          link?: string | null
+          ordem?: number
+        }
+        Relationships: []
+      }
       cd: {
         Row: {
           capa_url: string | null
@@ -100,6 +127,57 @@ export type Database = {
           },
         ]
       }
+      parceiro: {
+        Row: {
+          created_at: string
+          href: string | null
+          id: string
+          logo_url: string | null
+          nome: string
+          ordem: number
+        }
+        Insert: {
+          created_at?: string
+          href?: string | null
+          id?: string
+          logo_url?: string | null
+          nome: string
+          ordem?: number
+        }
+        Update: {
+          created_at?: string
+          href?: string | null
+          id?: string
+          logo_url?: string | null
+          nome?: string
+          ordem?: number
+        }
+        Relationships: []
+      }
+      hero_slide: {
+        Row: {
+          created_at: string
+          id: string
+          ordem: number
+          reference_id: string
+          type: Database['public']['Enums']['hero_slide_type']
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ordem?: number
+          reference_id: string
+          type: Database['public']['Enums']['hero_slide_type']
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ordem?: number
+          reference_id?: string
+          type?: Database['public']['Enums']['hero_slide_type']
+        }
+        Relationships: []
+      }
       perfil: {
         Row: {
           bio: string | null
@@ -161,6 +239,7 @@ export type Database = {
       }
     }
     Enums: {
+      hero_slide_type: 'banner' | 'cd' | 'dj'
       tipo_user: 'Admin' | 'DJ' | 'Ouvinte'
     }
     CompositeTypes: {
@@ -289,6 +368,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      hero_slide_type: ['banner', 'cd', 'dj'] as const,
       tipo_user: ['Admin', 'DJ', 'Ouvinte'] as const,
     },
   },

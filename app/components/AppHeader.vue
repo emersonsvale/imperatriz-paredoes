@@ -23,7 +23,12 @@
       <div class="w-20 md:w-24 lg:w-28 shrink-0" aria-hidden="true" />
       <!-- Search Bar -->
       <div class="hidden md:flex min-w-0 max-w-xl flex-1 mx-4 lg:mx-8">
-        <div class="relative w-full group">
+        <form
+          class="relative w-full group"
+          action="/busca"
+          method="get"
+          @submit.prevent="onSearchSubmit"
+        >
           <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-muted group-focus-within:text-primary transition-colors">
             <span class="material-symbols-outlined">search</span>
           </div>
@@ -31,29 +36,26 @@
             :id="searchInputId"
             v-model="searchQuery"
             class="w-full bg-card-dark border-none rounded-xl py-3 pl-12 pr-4 text-white placeholder-muted-secondary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-page focus:bg-card-hover transition-all"
-            type="text"
+            type="search"
+            name="q"
+            autocomplete="off"
             :placeholder="searchPlaceholder"
             aria-label="Buscar"
           />
-        </div>
+        </form>
       </div>
       <!-- User Actions -->
       <div class="flex shrink-0 items-center gap-3">
-        <button
-          v-if="isAuthenticated"
-          type="button"
-          class="flex size-10 items-center justify-center rounded-xl bg-card-dark hover:bg-card-hover text-muted hover:text-white transition-colors relative"
-          aria-label="Notificações"
-          @click="emit('notifications-click')"
-        >
-          <span class="material-symbols-outlined">notifications</span>
-          <span
-            v-if="hasNotifications"
-            class="absolute top-2.5 right-3 size-2 rounded-full bg-accent-purple"
-            aria-hidden="true"
-          />
-        </button>
         <template v-if="isAuthenticated">
+          <NuxtLink
+            v-if="perfil?.tipo_user === 'Admin'"
+            to="/admin/usuarios"
+            class="hidden sm:flex items-center gap-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-3 py-2 text-sm font-bold transition-colors"
+            aria-label="Painel Admin"
+          >
+            <span class="material-symbols-outlined text-lg">admin_panel_settings</span>
+            Admin
+          </NuxtLink>
           <NuxtLink
             to="/artist/configuracoes/perfil"
             class="hidden sm:flex items-center gap-2 rounded-xl bg-card-dark hover:bg-card-hover p-1 pr-4 transition-colors"
@@ -105,20 +107,34 @@ const searchInputId = 'header-search-input'
 const props = withDefaults(
   defineProps<{
     searchPlaceholder?: string
-    hasNotifications?: boolean
   }>(),
   {
     searchPlaceholder: 'Buscar CDs, DJs ou Paredões...',
-    hasNotifications: true,
   }
 )
 
 const emit = defineEmits<{
-  'notifications-click': []
   'profile-click': []
 }>()
 
 const searchQuery = defineModel<string>('search', { default: '' })
+const route = useRoute()
+
+function onSearchSubmit() {
+  const q = searchQuery.value?.trim() ?? ''
+  if (!q) return
+  navigateTo({ path: '/busca', query: { q } })
+}
+
+watch(
+  () => route.query.q,
+  (q) => {
+    if (route.path === '/busca' && typeof q === 'string') {
+      searchQuery.value = q
+    }
+  },
+  { immediate: true }
+)
 
 const user = useSupabaseUser()
 const { perfil } = usePerfil()

@@ -20,6 +20,7 @@
       @repeat="player.toggleRepeat()"
       @progress-seek="player.seek($event)"
       @volume-change="player.setVolume($event)"
+      @close="player.close()"
     />
   </div>
 </template>

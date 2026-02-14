@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen flex-col pb-24 antialiased">
+  <div class="flex min-h-screen flex-col antialiased">
     <AppHeader />
 
     <main class="mx-auto w-full max-w-[1440px] flex-1 px-6 py-8 lg:px-10">
@@ -56,51 +56,61 @@
               >
                 {{ dj.bio }}
               </p>
-              <!-- Redes sociais -->
-              <div
-                v-if="hasSocialLinks"
-                class="mt-6 flex flex-wrap gap-3"
-              >
-                <a
-                  v-if="dj.instagram"
-                  :href="instagramHref"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#E1306C] hover:bg-[#E1306C]/10 hover:text-white"
-                >
-                  <span class="material-symbols-outlined text-[20px]">photo_camera</span>
-                  Instagram
-                </a>
-                <a
-                  v-if="dj.facebook"
-                  :href="facebookHref"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#1877F2] hover:bg-[#1877F2]/10 hover:text-white"
-                >
-                  <span class="material-symbols-outlined text-[20px]">group</span>
-                  Facebook
-                </a>
-                <a
-                  v-if="dj.twitter"
-                  :href="twitterHref"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#1DA1F2] hover:bg-[#1DA1F2]/10 hover:text-white"
-                >
-                  <span class="material-symbols-outlined text-[20px]">tag</span>
-                  X / Twitter
-                </a>
-                <a
-                  v-if="dj.whatsapp"
-                  :href="whatsappHref"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#25D366] hover:bg-[#25D366]/10 hover:text-white"
-                >
-                  <span class="material-symbols-outlined text-[20px]">chat</span>
-                  WhatsApp
-                </a>
+              <!-- Redes sociais do DJ -->
+              <div v-if="hasSocialLinks" class="mt-6">
+                <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-white/50">
+                  Redes sociais
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <a
+                    v-if="dj.instagram"
+                    :href="instagramHref"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#E1306C]/50 hover:bg-[#E1306C]/10 hover:text-[#E1306C]"
+                    :aria-label="`Instagram de ${dj.nome}`"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                    <span>Instagram</span>
+                    <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+                  </a>
+                  <a
+                    v-if="dj.facebook"
+                    :href="facebookHref"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 hover:text-[#1877F2]"
+                    :aria-label="`Facebook de ${dj.nome}`"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">group</span>
+                    <span>Facebook</span>
+                    <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+                  </a>
+                  <a
+                    v-if="dj.twitter"
+                    :href="twitterHref"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#1DA1F2]/50 hover:bg-[#1DA1F2]/10 hover:text-[#1DA1F2]"
+                    :aria-label="`X de ${dj.nome}`"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">tag</span>
+                    <span>X / Twitter</span>
+                    <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+                  </a>
+                  <a
+                    v-if="dj.whatsapp"
+                    :href="whatsappHref"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80 transition-colors hover:border-[#25D366]/50 hover:bg-[#25D366]/10 hover:text-[#25D366]"
+                    :aria-label="`WhatsApp de ${dj.nome}`"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">chat</span>
+                    <span>WhatsApp</span>
+                    <span class="material-symbols-outlined text-[14px] opacity-60">open_in_new</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -199,7 +209,13 @@ const dj = computed<DjPublicProfile | null>(() => djData.value ?? null)
 
 const hasSocialLinks = computed(() => {
   const d = dj.value
-  return Boolean(d && (d.instagram || d.facebook || d.twitter || d.whatsapp))
+  if (!d) return false
+  return Boolean(
+    (d.instagram && d.instagram.trim()) ||
+      (d.facebook && d.facebook.trim()) ||
+      (d.twitter && d.twitter.trim()) ||
+      (d.whatsapp && d.whatsapp.trim())
+  )
 })
 
 const instagramHref = computed(() =>

@@ -4,40 +4,34 @@
     :href="href || undefined"
     :target="href ? '_blank' : undefined"
     rel="noopener noreferrer"
-    class="bg-black/40 hover:bg-white/5 p-4 rounded-xl flex flex-col sm:flex-row gap-4 items-center group transition-colors border border-transparent hover:border-border-subtle"
+    class="group flex flex-col rounded-xl overflow-hidden bg-black/40 hover:bg-white/5 border border-transparent hover:border-border-subtle transition-colors"
     :class="href ? 'cursor-pointer' : ''"
   >
-    <div class="shrink-0 size-16 rounded-xl overflow-hidden border-2 border-primary/30 bg-surface-dark flex items-center justify-center">
+    <!-- Área da logo (mesma proporção do TopDjCard) -->
+    <div class="relative aspect-square w-full overflow-hidden rounded-t-xl bg-surface-dark flex items-center justify-center">
       <img
         v-if="logoUrl"
         :alt="nome"
-        class="size-full object-contain p-1"
+        class="size-full object-contain p-4"
         :src="logoUrl"
       />
       <span
         v-else
-        class="text-2xl font-bold text-primary"
+        class="text-4xl font-bold text-primary"
       >
         {{ nome.charAt(0).toUpperCase() }}
       </span>
     </div>
-    <div class="flex-1 min-w-0 text-center sm:text-left">
-      <h4 class="font-bold text-white truncate">
+    <!-- Nome -->
+    <div class="flex flex-1 flex-col gap-2 p-3">
+      <h4 class="font-bold text-white truncate text-base leading-tight">
         {{ nome }}
       </h4>
     </div>
-    <span
-      v-if="href"
-      class="shrink-0 bg-surface text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity inline-flex"
-    >
-      <BaseIcon name="arrow_forward" />
-    </span>
   </component>
 </template>
 
 <script setup lang="ts">
-import BaseIcon from '~/components/ui/BaseIcon.vue'
-
 withDefaults(
   defineProps<{
     id: string

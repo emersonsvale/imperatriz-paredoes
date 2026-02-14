@@ -175,12 +175,6 @@
                     label="Título do CD"
                     placeholder="Ex: Verão no Paredão Vol. 4"
                   />
-                  <BaseSelect
-                    v-model="form.genre"
-                    label="Gênero Musical"
-                    placeholder="Selecione o gênero..."
-                    :options="genreOptions"
-                  />
                   <BaseTextarea
                     v-model="form.description"
                     label="Descrição"
@@ -340,11 +334,9 @@ import StatCard from '~/components/StatCard.vue'
 import BaseIcon from '~/components/ui/BaseIcon.vue'
 import BaseButton from '~/components/ui/BaseButton.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
-import BaseSelect from '~/components/ui/BaseSelect.vue'
 import BaseTextarea from '~/components/ui/BaseTextarea.vue'
 import BaseProgressBar from '~/components/ui/BaseProgressBar.vue'
 import BaseBadge from '~/components/ui/BaseBadge.vue'
-import type { SelectOption } from '~/components/ui/BaseSelect.vue'
 import { useArtistCds } from '~/composables/useArtistCds'
 import { usePerfil } from '~/composables/usePerfil'
 import { usePublishCd } from '~/composables/usePublishCd'
@@ -373,14 +365,6 @@ const stats = computed(() => [
   },
 ])
 
-/* ─── Genre Options ─── */
-const genreOptions: SelectOption[] = [
-  { value: 'piseiro', label: 'Piseiro' },
-  { value: 'funk-automotivo', label: 'Funk Automotivo' },
-  { value: 'forro-favela', label: 'Forró de Favela' },
-  { value: 'eletro-funk', label: 'Eletro Funk' },
-]
-
 /* ─── Recent Uploads (últimos 3 CDs do Supabase) ─── */
 const recentUploads = computed(() =>
   cds.value.slice(0, 3).map((cd) => {
@@ -399,7 +383,6 @@ const recentUploads = computed(() =>
 /* ─── Form State ─── */
 const form = ref({
   title: '',
-  genre: '',
   description: '',
 })
 const coverPreview = ref<string | null>(null)
@@ -466,7 +449,7 @@ function onCoverSelected(event: Event) {
 
 function resetForm() {
   if (coverPreview.value?.startsWith('blob:')) URL.revokeObjectURL(coverPreview.value)
-  form.value = { title: '', genre: '', description: '' }
+  form.value = { title: '', description: '' }
   coverPreview.value = null
   coverFile.value = null
   trackFiles.value = []
@@ -475,7 +458,6 @@ function resetForm() {
 async function publishCd() {
   const result = await publish({
     titulo: form.value.title,
-    genero: form.value.genre,
     descricao: form.value.description,
     coverFile: coverFile.value,
     trackFiles: trackFiles.value,

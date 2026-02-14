@@ -17,7 +17,7 @@ const empty = { items: [] as TopDownloadItem[] }
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
-  const limit = Math.min(Number(query.limit) || 10, 20)
+  const limit = Math.min(Number(query.limit) || 10, 100)
 
   let supabase
   try {

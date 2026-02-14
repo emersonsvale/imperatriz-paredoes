@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 
   const { data: cdRow, error: cdError } = await supabase
     .from('cd')
-    .select('id, titulo, descricao, genero, capa_url, created_at, perfil_id, downloads_count, plays_count')
+    .select('id, titulo, descricao, capa_url, created_at, perfil_id, downloads_count, plays_count')
     .eq('id', id)
     .single()
 
@@ -36,7 +36,6 @@ export default defineEventHandler(async (event) => {
   const whatsapp = pr?.whatsapp ?? undefined
 
   const releaseDate = formatReleaseDate(cdRow.created_at)
-  const tags = cdRow.genero ? [cdRow.genero] : []
   const trackCount = (faixasRows ?? []).length
   const totalDuration = '—' // opcional: somar duracao das faixas se preenchido no futuro
 
@@ -44,9 +43,9 @@ export default defineEventHandler(async (event) => {
   return {
     album: {
       title: cdRow.titulo ?? '',
-      subtitle: cdRow.descricao ?? cdRow.genero ?? '',
+      subtitle: cdRow.descricao ?? '',
       coverUrl: cdRow.capa_url ?? '',
-      tags,
+      tags: [],
       releaseDate,
       trackCount,
       totalDuration,

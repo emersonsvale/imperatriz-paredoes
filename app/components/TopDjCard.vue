@@ -1,9 +1,10 @@
 <template>
   <NuxtLink
     :to="to"
-    class="bg-black/40 hover:bg-white/5 p-4 rounded-xl flex flex-col sm:flex-row gap-4 items-center group transition-colors cursor-pointer border border-transparent hover:border-border-subtle"
+    class="group flex flex-col rounded-xl overflow-hidden bg-black/40 hover:bg-white/5 border border-transparent hover:border-border-subtle transition-colors cursor-pointer"
   >
-    <div class="shrink-0 size-16 rounded-full overflow-hidden border-2 border-primary/30">
+    <!-- Imagem do DJ (quadrada, cantos arredondados) -->
+    <div class="relative aspect-square w-full overflow-hidden rounded-t-xl">
       <img
         v-if="avatarUrl"
         :alt="nome"
@@ -12,40 +13,57 @@
       />
       <div
         v-else
-        class="size-full bg-surface-dark flex items-center justify-center text-2xl font-bold text-primary"
+        class="size-full bg-surface-dark flex items-center justify-center text-4xl font-bold text-primary"
       >
         {{ nome.charAt(0).toUpperCase() }}
       </div>
+
+      <!-- Badge de posição (#1, #2, #3) - canto superior esquerdo -->
+      <div
+        v-if="rank && rank >= 1 && rank <= 3"
+        class="absolute top-2 left-2 z-10 flex size-8 items-center justify-center rounded-full text-sm font-bold shadow-md"
+        :class="rankBadgeClass"
+      >
+        {{ rank }}
+      </div>
+
+      <!-- Ícone de música - canto superior direito -->
+      <div
+        class="absolute top-2 right-2 z-10 flex size-8 items-center justify-center rounded-full bg-[#eab308] text-black shadow-md"
+        aria-hidden
+      >
+        <span class="material-symbols-outlined text-[18px]">music_note</span>
+      </div>
     </div>
-    <div class="flex-1 min-w-0 text-center sm:text-left">
-      <h4 class="font-bold text-white truncate">
+
+    <!-- Nome e estatísticas -->
+    <div class="flex flex-1 flex-col gap-2 p-3">
+      <h4 class="font-bold text-white truncate text-base leading-tight">
         {{ nome }}
       </h4>
-      <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-2 text-xs text-muted-green">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-green">
         <span class="flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">album</span>
-          <strong class="text-white">{{ cdCount }}</strong> CDs
+          <span class="material-symbols-outlined text-[14px]">album</span>
+          <span class="text-white">{{ cdCount }} CDs</span>
         </span>
         <span class="flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">equalizer</span>
-          <strong class="text-white">{{ playsCount }}</strong> plays
+          <span class="material-symbols-outlined text-[14px]">play_arrow</span>
+          <span class="text-white">{{ formattedPlays }}</span>
         </span>
         <span class="flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">download</span>
-          <strong class="text-white">{{ downloadsCount }}</strong> downloads
+          <span class="material-symbols-outlined text-[14px]">download</span>
+          <span class="text-white">{{ formattedDownloads }}</span>
         </span>
       </div>
     </div>
-    <span class="shrink-0 bg-surface text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity inline-flex">
-      <BaseIcon name="arrow_forward" />
-    </span>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import BaseIcon from '~/components/ui/BaseIcon.vue'
+import { computed } from 'vue'
+import { formatCompactNumber } from '~/utils/formatCompactNumber'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     id: string
     nome: string
@@ -54,7 +72,26 @@ withDefaults(
     playsCount: number
     downloadsCount: number
     to?: string
+    /** Posição no ranking (1 = primeiro). Exibe badge apenas para 1, 2 e 3. */
+    rank?: number
   }>(),
   { to: '#' }
 )
+
+const formattedPlays = computed(() => formatCompactNumber(props.playsCount))
+const formattedDownloads = computed(() => formatCompactNumber(props.downloadsCount))
+
+const rankBadgeClass = computed(() => {
+  if (!props.rank || props.rank < 1 || props.rank > 3) return ''
+  switch (props.rank) {
+    case 1:
+      return 'bg-[#eab308] text-[#0a0a0a]'
+    case 2:
+      return 'bg-white text-[#0a0a0a]'
+    case 3:
+      return 'bg-blue-500 text-white'
+    default:
+      return ''
+  }
+})
 </script>

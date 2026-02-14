@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen flex-col pb-24 antialiased">
+  <div class="flex min-h-screen flex-col antialiased">
     <AppHeader />
 
     <main class="mx-auto w-full max-w-[1440px] flex-1 px-6 py-8 lg:px-10">

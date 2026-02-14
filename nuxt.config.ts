@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: '/login',
       callback: '/confirm',
-      exclude: ['/', '/login', '/confirm', '/cadastro', '/cd/*', '/dj/*'],
+      exclude: ['/', '/login', '/confirm', '/cadastro', '/cd/*', '/dj/*', '/top-downloads', '/djs', '/parceiros'],
       include: undefined,
       saveRedirectToCookie: true,
     },

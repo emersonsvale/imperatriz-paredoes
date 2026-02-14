@@ -8,15 +8,14 @@
         <p>
           © 2026 Imperatriz Paredões. Todos os direitos reservados.
         </p>
-        <p>
-          
+        <p class="text-xs text-white/40">
           <a
             href="https://valeapps.com.br/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-primary font-medium hover:text-white underline underline-offset-2 transition-colors"
+            class="text-inherit no-underline hover:no-underline hover:text-inherit hover:text-white/55"
           >
-          Um produto Vale Apps
+            Um produto Vale Apps
           </a>
         </p>
       </div>

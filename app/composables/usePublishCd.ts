@@ -6,7 +6,6 @@ import type { TablesInsert } from '~~/shared/types/database.types'
 
 export type PublishCdPayload = {
   titulo: string
-  genero: string
   descricao: string
   coverFile: File | null
   trackFiles: File[]

@@ -3,8 +3,14 @@
     id="global-player-bar"
     class="fixed bottom-0 left-0 right-0 h-24 bg-background-player/80 backdrop-blur-xl border-t border-border-subtle z-50 flex items-center px-4 md:px-8 shadow-player-bar"
   >
-    <!-- Track info -->
-    <div class="flex items-center gap-4 w-1/4">
+    <!-- Track info (clique leva à página do CD) -->
+    <div
+      class="flex items-center gap-4 w-1/4 min-w-0"
+      :class="{ 'cursor-pointer hover:opacity-90': currentTrack?.cdId }"
+      role="link"
+      :aria-label="currentTrack?.cdId ? `Ir para o CD: ${currentTrack.title}` : undefined"
+      @click="goToCd"
+    >
       <div class="size-14 rounded-lg overflow-hidden shrink-0 relative group">
         <img
           :alt="currentTrack ? `Capa: ${currentTrack.title}` : 'Capa da faixa'"
@@ -21,8 +27,9 @@
       </div>
       <button
         type="button"
-        class="text-muted hover:text-white sm:hidden"
+        class="text-muted hover:text-white sm:hidden shrink-0"
         aria-label="Favoritar"
+        @click.stop
       >
         <span class="material-symbols-outlined">favorite_border</span>
       </button>
@@ -98,6 +105,15 @@
     <div class="w-1/4 flex items-center justify-end gap-4">
       <button
         type="button"
+        class="text-muted hover:text-white shrink-0"
+        title="Fechar player e parar"
+        aria-label="Fechar player"
+        @click="emit('close')"
+      >
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+      <button
+        type="button"
         class="text-muted hover:text-white hidden lg:block"
         title="Letra"
         aria-label="Letra"
@@ -164,6 +180,7 @@ const emit = defineEmits<{
   'next': []
   'shuffle': []
   'repeat': []
+  'close': []
   'progress-seek': [fraction: number]
   'volume-change': [percent: number]
   'volume-click': []
@@ -205,5 +222,11 @@ function onVolumeClick(event: MouseEvent) {
   const rect = el.getBoundingClientRect()
   const fraction = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width))
   emit('volume-change', Math.round(fraction * 100))
+}
+
+function goToCd() {
+  if (props.currentTrack?.cdId) {
+    navigateTo(`/cd/${props.currentTrack.cdId}`)
+  }
 }
 </script>

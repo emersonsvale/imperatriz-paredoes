@@ -173,6 +173,13 @@ export function useGlobalPlayer() {
     shuffleMode.value = !shuffleMode.value
   }
 
+  /** Para a reprodução e fecha o player (limpa a faixa atual). */
+  function close() {
+    setTrack(null)
+    trackList.value = []
+    currentIndex.value = 0
+  }
+
   return {
     currentTrack: readonly(currentTrack),
     isPlaying: readonly(isPlaying),
@@ -190,5 +197,6 @@ export function useGlobalPlayer() {
     setVolume,
     toggleRepeat,
     toggleShuffle,
+    close,
   }
 }
