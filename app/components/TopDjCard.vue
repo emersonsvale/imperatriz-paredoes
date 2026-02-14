@@ -41,6 +41,10 @@
       <h4 class="font-bold text-white truncate text-base leading-tight">
         {{ nome }}
       </h4>
+      <p v-if="cidade" class="flex items-center gap-1 text-xs text-muted-green">
+        <span class="material-symbols-outlined text-[14px]">location_on</span>
+        <span class="text-white truncate">{{ cidade }}</span>
+      </p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-green">
         <span class="flex items-center gap-1">
           <span class="material-symbols-outlined text-[14px]">album</span>
@@ -68,6 +72,8 @@ const props = withDefaults(
     id: string
     nome: string
     avatarUrl?: string | null
+    /** Cidade do DJ (ex: Imperatriz, São Luís) */
+    cidade?: string | null
     cdCount: number
     playsCount: number
     downloadsCount: number

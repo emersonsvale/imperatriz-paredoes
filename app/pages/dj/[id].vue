@@ -37,6 +37,10 @@
                 {{ dj.nome }}
               </h1>
               <div class="mt-4 flex flex-wrap gap-4 text-sm text-muted-green">
+                <span v-if="dj.cidade" class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[18px]">location_on</span>
+                  <span class="text-white">{{ dj.cidade }}</span>
+                </span>
                 <span class="flex items-center gap-1">
                   <span class="material-symbols-outlined text-[18px]">album</span>
                   <strong class="text-white">{{ dj.cdCount }}</strong> CDs

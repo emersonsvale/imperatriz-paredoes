@@ -56,7 +56,7 @@
         class="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-primary px-6 text-lg font-bold text-background-dark shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-primary/40"
       >
         <span class="material-symbols-outlined text-[28px] fill-current">download</span>
-        <span>BAIXAR CD COMPLETO (ZIP)</span>
+        <span>BAIXAR CD COMPLETO</span>
       </a>
       <button
         v-else
@@ -65,7 +65,7 @@
         class="flex h-14 w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl bg-white/10 px-6 text-lg font-bold text-white/50"
       >
         <span class="material-symbols-outlined text-[28px] fill-current">download</span>
-        <span>BAIXAR CD COMPLETO (ZIP)</span>
+        <span>BAIXAR CD COMPLETO</span>
       </button>
       <div class="flex gap-3">
         <button

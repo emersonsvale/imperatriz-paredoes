@@ -181,6 +181,7 @@ export type Database = {
       perfil: {
         Row: {
           bio: string | null
+          cidade: string | null
           created_at: string
           email: string | null
           facebook: string | null
@@ -195,6 +196,7 @@ export type Database = {
         }
         Insert: {
           bio?: string | null
+          cidade?: string | null
           created_at?: string
           email?: string | null
           facebook?: string | null
@@ -209,6 +211,7 @@ export type Database = {
         }
         Update: {
           bio?: string | null
+          cidade?: string | null
           created_at?: string
           email?: string | null
           facebook?: string | null

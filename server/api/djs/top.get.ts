@@ -9,6 +9,7 @@ export interface TopDjItem {
   id: string
   nome: string
   foto_perfil: string | null
+  cidade: string | null
   cdCount: number
   playsCount: number
   downloadsCount: number
@@ -66,7 +67,7 @@ export default defineEventHandler(async (event) => {
 
   const { data: perfis, error: perfisError } = await supabase
     .from('perfil')
-    .select('id, nome, foto_perfil')
+    .select('id, nome, foto_perfil, cidade')
     .in('id', perfilIds)
 
   if (perfisError) {
@@ -75,9 +76,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const perfilMap = new Map(
-    (perfis ?? []).map((p: { id: string; nome: string | null; foto_perfil: string | null }) => [
+    (perfis ?? []).map((p: { id: string; nome: string | null; foto_perfil: string | null; cidade: string | null }) => [
       p.id,
-      { nome: p.nome ?? 'Artista', foto_perfil: p.foto_perfil ?? null },
+      { nome: p.nome ?? 'Artista', foto_perfil: p.foto_perfil ?? null, cidade: p.cidade ?? null },
     ])
   )
 
@@ -87,6 +88,7 @@ export default defineEventHandler(async (event) => {
       id: t.perfil_id,
       nome: p?.nome ?? 'Artista',
       foto_perfil: p?.foto_perfil ?? null,
+      cidade: p?.cidade ?? null,
       cdCount: t.cdCount,
       playsCount: t.playsCount,
       downloadsCount: t.downloadsCount,

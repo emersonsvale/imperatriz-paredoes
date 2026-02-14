@@ -9,6 +9,7 @@ export interface DjPublicProfile {
   nome: string
   foto_perfil: string | null
   bio: string | null
+  cidade: string | null
   instagram: string | null
   facebook: string | null
   twitter: string | null
@@ -40,7 +41,7 @@ export default defineEventHandler(async (event): Promise<DjPublicProfile | null>
 
   const { data: perfil, error: perfilError } = await supabase
     .from('perfil')
-    .select('id, nome, foto_perfil, bio, instagram, facebook, twitter, whatsapp')
+    .select('id, nome, foto_perfil, bio, cidade, instagram, facebook, twitter, whatsapp')
     .eq('id', id)
     .single()
 
@@ -61,6 +62,7 @@ export default defineEventHandler(async (event): Promise<DjPublicProfile | null>
       nome: perfil.nome ?? 'Artista',
       foto_perfil: perfil.foto_perfil ?? null,
       bio: perfil.bio ?? null,
+      cidade: perfil.cidade ?? null,
       instagram: perfil.instagram ?? null,
       facebook: perfil.facebook ?? null,
       twitter: perfil.twitter ?? null,
@@ -89,6 +91,7 @@ export default defineEventHandler(async (event): Promise<DjPublicProfile | null>
     nome: perfil.nome ?? 'Artista',
     foto_perfil: perfil.foto_perfil ?? null,
     bio: perfil.bio ?? null,
+    cidade: perfil.cidade ?? null,
     instagram: perfil.instagram ?? null,
     facebook: perfil.facebook ?? null,
     twitter: perfil.twitter ?? null,

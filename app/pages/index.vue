@@ -46,6 +46,7 @@
             :id="dj.id"
             :nome="dj.nome"
             :avatar-url="dj.foto_perfil"
+            :cidade="dj.cidade"
             :cd-count="dj.cdCount"
             :plays-count="dj.playsCount"
             :downloads-count="dj.downloadsCount"
@@ -166,7 +167,7 @@ const topDownloads = computed<CdCardData[]>(() => {
 
 /* ─── Top DJs (perfis com mais CDs, plays e downloads) ─── */
 const { data: topDjsData } = await useFetch<{
-  items: { id: string; nome: string; foto_perfil: string | null; cdCount: number; playsCount: number; downloadsCount: number }[]
+  items: { id: string; nome: string; foto_perfil: string | null; cidade: string | null; cdCount: number; playsCount: number; downloadsCount: number }[]
 }>('/api/djs/top', {
   key: 'djs-top',
   default: () => ({ items: [] }),

@@ -82,6 +82,11 @@
                   placeholder="Conte um pouco sobre você..."
                   :rows="4"
                 />
+                <BaseInput
+                  v-model="form.cidade"
+                  label="Cidade"
+                  placeholder="Ex: Imperatriz, São Luís"
+                />
               </div>
             </div>
             <div class="mt-8 border-t border-border-dark pt-8">
@@ -154,6 +159,7 @@ const form = ref({
   nomeArtistico: '',
   email: '',
   bio: '',
+  cidade: '',
   instagram: '',
   facebook: '',
   twitter: '',
@@ -171,6 +177,7 @@ watch(
       form.value.nomeArtistico = p.nome ?? ''
       form.value.email = p.email ?? ''
       form.value.bio = p.bio ?? ''
+      form.value.cidade = p.cidade ?? ''
       form.value.instagram = p.instagram ?? ''
       form.value.facebook = p.facebook ?? ''
       form.value.twitter = p.twitter ?? ''
@@ -214,6 +221,7 @@ async function saveProfile() {
     nome: form.value.nomeArtistico.trim() || null,
     email: form.value.email.trim() || null,
     bio: form.value.bio.trim() || null,
+    cidade: form.value.cidade.trim() || null,
     foto_perfil: fotoUrl,
     instagram: form.value.instagram.trim() || null,
     facebook: form.value.facebook.trim() || null,
