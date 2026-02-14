@@ -1,0 +1,76 @@
+/* ======================================================
+   Imperatriz Paredões — Design System Theme
+   ====================================================== */
+
+/* --- Design Tokens (CSS Custom Properties) --- */
+:root {
+  --color-primary: #2ee509;
+  --color-primary-hover: #33f20d;
+  --color-accent-purple: #a855f7;
+  --color-accent-purple-bright: #c084fc;
+  --color-background-dark: #0c0c0c;
+  --color-background-page: #111111;
+  --color-background-player: #1a1a1a;
+  --color-card-dark: #1c1c1c;
+  --color-card-hover: #262626;
+  --color-surface: #2e2e2e;
+  --color-surface-hover: #3a3a3a;
+  --color-border-subtle: #2a2a2a;
+  --color-nav-border: #2d3d2a;
+  --color-border-focus: #2ee509;
+  --color-text-primary: #fafafa;
+  --color-text-muted: #c2c2c2;
+  --color-text-muted-secondary: #8a8a8a;
+  --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* --- Dark Mode --- */
+.dark {
+  color-scheme: dark;
+}
+
+/* --- Base Body --- */
+body {
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  background-color: var(--color-background-page);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-nav-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* --- Text Selection --- */
+::selection {
+  background: var(--color-primary);
+  color: #0a0a0a;
+}
+
+/* --- Material Symbols --- */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}
+
+/* --- Utility: No Scrollbar --- */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
